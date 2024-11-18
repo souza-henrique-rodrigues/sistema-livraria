@@ -1,5 +1,8 @@
 from datetime import datetime
 
+
+
+
 class Livraria:
     def __init__(self,titulo,codigo,editora,area,ano,valor,qtd_estoque):
         self.titulo = titulo
@@ -11,24 +14,23 @@ class Livraria:
         self.qtd_estoque = qtd_estoque
     
     def infoGeral(self):
-            print(f"Titulo : {self.titulo}")
-            print(f"codigo : {self.codigo}")
+            print(f"Cod#: {self.codigo}")
+            print(f"Titulo/Editora: {self.titulo}")
+            print(f"Categoria: {self.area}")
             print(f"editora : {self.editora}")
-            print(f"area : {self.area}")
             print(f"ano : {self.ano}")
-            print(f"valor: R$ {self.valor}")
-            print(f"quantidade em estoque : {self.qtd_estoque}")
-            print(f"O valor total em estoque é {self.valor * self.qtd_estoque:2.f} ")
+            print(f"Valor: R$ {self.valor}")
+            print(f"Estoque: {self.qtd_estoque}")
+            print(f"O valor total em estoque: R$ {self.valor * self.qtd_estoque} ")
+    
     
     def procurarLivroNome(self,nomeLivro):
-        livro_encontrado = False
         for livro in livros:
             if (livro.titulo == nomeLivro):
                 print(livro.infoGeral())
-                livro_encontrado = True
                 break
-        if not livro_encontrado:
-            print("Livro não encontrado.")
+            else:
+                print("Livro não encontrado")    
     
     def procurarLivroCat(self,categoria):
         for livro in livros:
@@ -39,14 +41,14 @@ class Livraria:
             
     def procurarLivroQtd(self,quantidade):
         for livro in livros:
-            if (livro.qtd_estoque == quantidade):
+            if (livro.qtd_estoque >= quantidade):
                 print(livro.infoGeral())
         if livro not in livros:
             print("Livro não encontrado pela quantidade especificada.")
     
     def procurarLivroPreco(self,preco):
         for livro in livros:
-            if (livro.preco == preco):
+            if (livro.valor <= preco):
                 print(livro.infoGeral())
         
         if livro not in livros:
@@ -57,7 +59,21 @@ class Livraria:
          for livro in livros:
              preco_total += livro.valor * livro.qtd_estoque
          
-         print(f"O valor total do estoque é R$ {preco_total:.2f}")
+         print(f"O valor total do estoque é R$ {preco_total}")
+         
+    
+    
+    def cadastrarTxt(self):
+        
+        arquivo = open("livro.txt","r")
+        linha = arquivo.readline().replace("\n","")
+
+        while linha:
+                info_linha = linha.split(",")
+                livro = Livraria(info_linha[0],info_linha[1],info_linha[2],info_linha[3],info_linha[4],info_linha[5],info_linha[6])
+                livros.append(livro)
+                linha = arquivo.readline().replace("\n","")
+        
            
 
 if __name__ == "__main__":
@@ -67,7 +83,7 @@ if __name__ == "__main__":
     run = True
     while (run):
         
-        pergunta = input("Qual opção deseja realizar ? \n 1: Cadastrar novo livro\n 2: Listar todos os livros\n 3: Buscar livro por nome\n 4: Buscar livro por categoria\n 5: Buscar livro por preço\n 6: Buscar livro por quantidade em estoque\n 7: Mostrar valor total em estoque\n 0: Encerrar programa ")
+        pergunta = input("Qual opção deseja realizar ?\n \n 1: Cadastrar novo livro\n 2: Listar todos os livros\n 3: Buscar livro por nome\n 4: Buscar livro por categoria\n 5: Buscar livro por preço\n 6: Buscar livro por quantidade em estoque\n 7: Mostrar valor total em estoque\n 8: Carregar  livros txt\n 0: Encerrar programa\n opção : ")
             
         match pergunta:
 
@@ -115,30 +131,41 @@ if __name__ == "__main__":
                 livros.append(livro)
             
             case "2":
-                for livro in livros:
-                    print(f"{livro.infoGeral()}")
+                if (len(livros) == 0):
+                    print("Nehum livro adicionado ainda\n")
+                else:
+                    livro.infoGeral()
             
             case "3":
-                pergunta = input("Qual nome do livro que deseja procurar ? ")
-                livro.procurarLivroNome(pergunta)
+                if (len(livros)==0):
+                    print("Nenhum livro adicionado até o momento")
+                else:
+                    pergunta = input("Qual nome do livro que deseja procurar ? ")
+                    livro.procurarLivroNome(pergunta)
                 
             case "4":
                pergunta = input("Informe a categoria que deseja procurar : ")
                livro.procurarLivroCat(pergunta)
             
             case "5":
-                pergunta = float(input("Buscar livro por preço : "))
+                pergunta = float(input("Buscar livros com valor igual ou menor : "))
+                livro.procurarLivroPreco(pergunta)
                 
             case "6":
-                pergunta = int(input("Buscar livro por quantidade em estoque : "))
+                pergunta = int(input("Buscar livro por quantidade em estoque :\n "))
                 livro.procurarLivroQtd(pergunta)
                  
             case "7":
                 livro.calcularEstoqueTotal()
+                print()
+            
+            case "8":
+                livro.cadastrarTxt()
+                
                 
             case "0":
                 run = False
         
             case _:
-                print("Por favor, insira um valor correspondente")
+                print("Por favor escolha uma das oppções disponíveis\n")
     

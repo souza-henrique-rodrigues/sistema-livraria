@@ -1,4 +1,5 @@
 from classeLivro import Livro
+from classeFilial import Filial
 from datetime import datetime
 
 
@@ -19,7 +20,7 @@ class Livraria():
         if len(self.livros) > 0:
             return True
     
-    def cadastrarLivro(self):      
+    def cadastrarLivro(self):   
         codigo = (input("Informe o codigo : "))   
         titulo = input("Informe o nome do livro : ")  
         
@@ -56,7 +57,17 @@ class Livraria():
         # Insere as informações no objeto instanciado
         livro = Livro(codigo,titulo,ano,genero,editora,valor,quantidade)
         self.livros.append(livro)
+    
+    def cadastrarFilial(self):
+        codigo = input("Informe o codigo da filial : ")
+        nome = input("Informe o nome da filial : ")
+        endereco = input("Informe o endereco :")
+        contato = input("Informe o contato : ")
         
+        filial = Filial(codigo,nome,endereco,contato)
+        pass
+        
+          
     def mostrarLivros(self):
         if self.verificarLivroExiste:        
             for livro in self.livros:
@@ -129,7 +140,7 @@ class Livraria():
     def carregarLivrosTxt(self):
         #salvar o codigo de todos livros existentes no txt
         codigos_livros_txt = []
-        arquivo = open("livro2.txt",'r',encoding='utf-8') 
+        arquivo = open("livro.txt",'r',encoding='utf-8') 
         linha = arquivo.readline().replace("\n","")
         
         while linha:
@@ -138,7 +149,7 @@ class Livraria():
             linha = arquivo.readline().replace("\n","")
         
         
-        arquivoEscrita = open('livro2.txt', 'a', encoding="utf-8")
+        arquivoEscrita = open('livro.txt', 'a', encoding="utf-8")
         for livro in self.livros:
             codigo = str(livro.codigo)
             titulo = str(livro.titulo)
